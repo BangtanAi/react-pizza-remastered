@@ -4,7 +4,7 @@ import Sort from "../components/Sort";
 import Categories from "../components/Categories";
 import PizzaBlockLoader from "../components/PizzaBlock/PizzaBlockLoader";
 
-function Home() {
+function Home({searchValue}) {
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [sortType, setActiveSortType] = React.useState({
@@ -15,11 +15,12 @@ function Home() {
 
   const category = activeCategory > 0 ? `category=${activeCategory}` : "";
   const order = sortType.sortProperty.replace('-', '');
-  const orderBy = sortType.sortProperty.includes('-') ? 'asc' : 'desc'
+  const orderBy = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
+  const search = searchValue ? `search=${searchValue}`: '';
 
   React.useEffect(() => {
     setIsLoading(true);
-    fetch(`https://62e2bc283891dd9ba8eeef9d.mockapi.io/pizzas?${category}&sortBy=${order}&order=${orderBy}`)
+    fetch(`https://62e2bc283891dd9ba8eeef9d.mockapi.io/pizzas?${category}&sortBy=${order}&order=${orderBy}&${search}`)
       .then((res) => {
         return res.json();
       })
@@ -27,7 +28,7 @@ function Home() {
         setItems(arr);
         setIsLoading(false);
       });
-  }, [activeCategory, sortType]);
+  }, [activeCategory, sortType, searchValue]);
   return (
     <div className="container">
       <div className="content__top">
