@@ -4,8 +4,10 @@ import Sort from "../components/Sort";
 import Categories from "../components/Categories";
 import PizzaBlockLoader from "../components/PizzaBlock/PizzaBlockLoader";
 import { Pagination } from "./Pagination";
+import { SearchContext } from "../App";
 
-function Home({searchValue}) {
+function Home() {
+  const {searchValue} = React.useContext(SearchContext);
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [sortType, setActiveSortType] = React.useState({
