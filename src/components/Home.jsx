@@ -42,7 +42,7 @@ function Home() {
         setIsLoading(false);
       });
   };
-
+  console.log(isMounted)
   // Если изменили параметры и был первый рендер
   React.useEffect(() => {
     if (isMounted.current) {
@@ -55,6 +55,7 @@ function Home() {
       navigate(`?${queryString}`);
     }
     isMounted.current = true;
+    console.log(isMounted)
   }, [activeCategory, sortType, currentPage]);
 
   // Если был первый рендер, то проверяем URl-параметры и сохраняем в редуксе
