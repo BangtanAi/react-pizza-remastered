@@ -1,8 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Search } from "./Search";
 
 function Header({searchValue, setSearchValue}) {
+  const totalCount = useSelector(state=>state.cart.totalCount);
+  const totalPrice = useSelector(state=>state.cart.totalPrice);
+
   return (
     <div className="header">
       <div className="container">
@@ -19,7 +23,7 @@ function Header({searchValue, setSearchValue}) {
         <Search searchValue={searchValue} setSearchValue={setSearchValue}/>
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
-            <span>520 ₽</span>
+            <span>{totalPrice} ₽</span>
             <div className="button__delimiter"></div>
             <svg
               width="18"
@@ -50,7 +54,7 @@ function Header({searchValue, setSearchValue}) {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>3</span>
+            <span>{totalCount}</span>
           </Link>
         </div>
       </div>
