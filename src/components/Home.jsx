@@ -11,38 +11,36 @@ import {
   setCurrentPage,
   setFilters,
 } from "./../redux/slices/filterSlice";
-import axios from "axios";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
+import { fetchPizzas } from "../redux/slices/pizzaSlice";
 
 function Home() {
   const activeCategory = useSelector((state) => state.filter.activeCategory);
   const sortType = useSelector((state) => state.filter.sortType);
   const currentPage = useSelector((state) => state.filter.currentPage);
+  const { items, status } = useSelector((state) => state.pizza);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { searchValue } = React.useContext(SearchContext);
-  const [items, setItems] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
-  const fetchPizzas = async () => {
-    setIsLoading(true);
+  const getPizzas = async () => {
     const category = activeCategory > 0 ? `category=${activeCategory}` : "";
     const order = sortType.sortProperty.replace("-", "");
     const orderBy = sortType.sortProperty.includes("-") ? "asc" : "desc";
     const search = searchValue ? `search=${searchValue}` : "";
-    try {
-      const res = await axios.get(
-        `https://62e2bc283891dd9ba8eeef9d.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${order}&order=${orderBy}&${search}`
-      );
-      setItems(res.data);
-    } catch (error) {
-      console.log("ERROR", error);
-    } finally {
-      setIsLoading(false);
-    }
+    dispatch(
+      fetchPizzas({
+        currentPage,
+        category,
+        order,
+        orderBy,
+        search,
+      })
+    );
+    window.scrollTo(0, 0);
   };
   // Если изменили параметры и был первый рендер
   React.useEffect(() => {
@@ -80,7 +78,7 @@ function Home() {
     window.scrollTo(0, 0);
 
     if (!isSearch.current) {
-      fetchPizzas();
+      getPizzas();
     }
     isSearch.current = false;
   }, [activeCategory, sortType, searchValue, currentPage]);
@@ -95,13 +93,23 @@ function Home() {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
-        {isLoading
-          ? [...new Array(6)].map((_, index) => (
-              <PizzaBlockLoader key={index} />
-            ))
-          : items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)}
-      </div>
+      {status === "error" ? (
+        <div className="content__error-info">
+          <h2>Произошла ошибка 😕</h2>
+          <p>
+            К сожалению, не удалось получить питсы. Попробуйте повторить попытку
+            позже.
+          </p>
+        </div>
+      ) : (
+        <div className="content__items">
+          {status === "loading"
+            ? [...new Array(6)].map((_, index) => (
+                <PizzaBlockLoader key={index} />
+              ))
+            : items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)}
+        </div>
+      )}
       <Pagination
         currentPage={currentPage}
         setCurrentPage={(number) => {
