@@ -27,22 +27,23 @@ function Home() {
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setIsLoading(true);
     const category = activeCategory > 0 ? `category=${activeCategory}` : "";
     const order = sortType.sortProperty.replace("-", "");
     const orderBy = sortType.sortProperty.includes("-") ? "asc" : "desc";
     const search = searchValue ? `search=${searchValue}` : "";
-    axios
-      .get(
+    try {
+      const res = await axios.get(
         `https://62e2bc283891dd9ba8eeef9d.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${order}&order=${orderBy}&${search}`
-      )
-      .then((response) => {
-        setItems(response.data);
-        setIsLoading(false);
-      });
+      );
+      setItems(res.data);
+    } catch (error) {
+      console.log("ERROR", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
-  console.log(isMounted)
   // Если изменили параметры и был первый рендер
   React.useEffect(() => {
     if (isMounted.current) {
@@ -55,7 +56,6 @@ function Home() {
       navigate(`?${queryString}`);
     }
     isMounted.current = true;
-    console.log(isMounted)
   }, [activeCategory, sortType, currentPage]);
 
   // Если был первый рендер, то проверяем URl-параметры и сохраняем в редуксе
