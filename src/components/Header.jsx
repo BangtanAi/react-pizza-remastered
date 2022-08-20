@@ -7,7 +7,6 @@ function Header({ searchValue, setSearchValue }) {
   const totalCount = useSelector((state) => state.cart.totalCount);
   const totalPrice = useSelector((state) => state.cart.totalPrice);
   const location = useLocation();
-  console.log(location);
 
   return (
     <div className="header">

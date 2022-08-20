@@ -2,6 +2,7 @@ import React from "react";
 import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
 import Sort, { sortNames } from "../components/Sort";
 import Categories from "../components/Categories";
+import PizzaDetail from "../components/PizzaDetail";
 import PizzaBlockLoader from "../components/PizzaBlock/PizzaBlockLoader";
 import { Pagination } from "./Pagination";
 import { useSelector, useDispatch } from "react-redux";

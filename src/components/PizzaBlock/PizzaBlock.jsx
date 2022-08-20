@@ -1,33 +1,37 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {addItem, selectCartItemById} from '../../redux/slices/cartSlice';
+import { Link } from "react-router-dom";
+import { addItem, selectCartItemById } from "../../redux/slices/cartSlice";
 
 function PizzaBlock({ id, imageUrl, name, types, sizes, price }) {
-  const cartItem = useSelector(selectCartItemById(id))
-  const addedCount = cartItem ? cartItem.count : 0
+  const cartItem = useSelector(selectCartItemById(id));
+  const addedCount = cartItem ? cartItem.count : 0;
   const [activeType, setActiveType] = React.useState(0);
   const [activeSize, setActiveSize] = React.useState(0);
   const dispatch = useDispatch();
   const typeNames = ["тонкое", "традиционное"];
-  const onClickAdd = ()=>{
+  const onClickAdd = () => {
     const item = {
       id,
       name,
       imageUrl,
       price,
       type: typeNames[activeType],
-      size: sizes[activeSize]
+      size: sizes[activeSize],
     };
-    dispatch(addItem(item))
-  }
+    dispatch(addItem(item));
+  };
   return (
     <div className="pizza-block">
-      <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
-      <h4 className="pizza-block__title">{name}</h4>
+      <Link to={`/pizza/${id}`}>
+        <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+        <h4 className="pizza-block__title">{name}</h4>
+      </Link>
       <div className="pizza-block__selector">
         <ul>
           {types.map((typeId) => (
-            <li key={typeId}
+            <li
+              key={typeId}
               onClick={() => setActiveType(typeId)}
               className={activeType === typeId ? "active" : ""}
             >
@@ -36,12 +40,23 @@ function PizzaBlock({ id, imageUrl, name, types, sizes, price }) {
           ))}
         </ul>
         <ul>
-            {sizes.map((size, i)=>(<li key={i} className={activeSize === i ? 'active' : ''} onClick={()=>setActiveSize(i)}>{size} см.</li>))}
+          {sizes.map((size, i) => (
+            <li
+              key={i}
+              className={activeSize === i ? "active" : ""}
+              onClick={() => setActiveSize(i)}
+            >
+              {size} см.
+            </li>
+          ))}
         </ul>
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">от {price} ₽</div>
-        <button onClick={onClickAdd} className="button button--outline button--add">
+        <button
+          onClick={onClickAdd}
+          className="button button--outline button--add"
+        >
           <svg
             width="12"
             height="12"
