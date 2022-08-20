@@ -6,13 +6,9 @@ import Home from "./components/Home";
 import NotFound from "./components/NotFound/NotFound";
 import Cart from "./components/Cart";
 
-export const SearchContext = React.createContext();
-
 function App() {
-  const [searchValue, setSearchValue] = React.useState("");
   return (
     <div className="wrapper">
-      <SearchContext.Provider value={{ searchValue, setSearchValue }}>
         <Header />
         <div className="content">
           <Routes>
@@ -21,7 +17,6 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
-      </SearchContext.Provider>
     </div>
   );
 }

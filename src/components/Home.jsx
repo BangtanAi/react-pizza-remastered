@@ -4,7 +4,6 @@ import Sort, { sortNames } from "../components/Sort";
 import Categories from "../components/Categories";
 import PizzaBlockLoader from "../components/PizzaBlock/PizzaBlockLoader";
 import { Pagination } from "./Pagination";
-import { SearchContext } from "../App";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setActiveCategory,
@@ -22,7 +21,7 @@ function Home() {
   const { items, status } = useSelector((state) => state.pizza);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { searchValue } = React.useContext(SearchContext);
+  const searchValue = useSelector((state) => state.filter.searchValue);
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
