@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { Search } from "./Search";
 
-function Header({ searchValue, setSearchValue }) {
-  const totalCount = useSelector((state) => state.cart.totalCount);
-  const totalPrice = useSelector((state) => state.cart.totalPrice);
+const Header: React.FC = ()=> {
+  const totalCount:any = useSelector((state: any) => state.cart.totalCount);
+  const totalPrice = useSelector((state: any) => state.cart.totalPrice);
   const location = useLocation();
 
   return (
@@ -21,7 +21,7 @@ function Header({ searchValue, setSearchValue }) {
             <p>самая вкусная пицца во вселенной</p>
           </div>
         </Link>
-        <Search searchValue={searchValue} setSearchValue={setSearchValue} />
+        <Search />
         <div className="header__cart">
           {location.pathname !== "/cart" && (
             <Link to="/cart" className="button button--cart">
