@@ -5,10 +5,10 @@ import CartEmpty from "./CartEmpty";
 import CartItem from "./CartItem";
 import {clearCart} from '../redux/slices/cartSlice'
 
-function Cart() {
+const Cart: React.FC = () => {
   const dispatch = useDispatch()
-  const items = useSelector(state=>state.cart.items)
-  const {totalCount, totalPrice} = useSelector(state=>state.cart)
+  const items = useSelector((state:any)=>state.cart.items)
+  const {totalCount, totalPrice} = useSelector((state:any)=>state.cart)
   const onClearCart = () => {
     if(window.confirm('Are you really want to remove cart?')){
       dispatch(clearCart())
@@ -93,7 +93,7 @@ function Cart() {
             </div>
           </div>
           <div className="content__items">
-            {items.map(item=><CartItem {...item} key={item.id}/>)}
+            {items.map((item:any)=><CartItem {...item} key={item.id}/>)}
           </div>
           <div className="cart__bottom">
             <div className="cart__bottom-details">

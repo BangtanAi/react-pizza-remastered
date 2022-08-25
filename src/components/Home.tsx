@@ -1,28 +1,28 @@
 import React from "react";
-import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
-import Sort, { sortNames } from "../components/Sort";
-import Categories from "../components/Categories";
-import PizzaDetail from "../components/PizzaDetail";
-import PizzaBlockLoader from "../components/PizzaBlock/PizzaBlockLoader";
+import PizzaBlock from "./PizzaBlock/PizzaBlock";
+import Sort, { sortNames } from "./Sort";
+import Categories from "./Categories";
+import PizzaDetail from "./PizzaDetail";
+import PizzaBlockLoader from "./PizzaBlock/PizzaBlockLoader";
 import { Pagination } from "./Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setActiveCategory,
   setCurrentPage,
   setFilters,
-} from "./../redux/slices/filterSlice";
+} from "../redux/slices/filterSlice";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
 import { fetchPizzas } from "../redux/slices/pizzaSlice";
 
-function Home() {
-  const activeCategory = useSelector((state) => state.filter.activeCategory);
-  const sortType = useSelector((state) => state.filter.sortType);
-  const currentPage = useSelector((state) => state.filter.currentPage);
-  const { items, status } = useSelector((state) => state.pizza);
+const Home:React.FC = () => {
+  const activeCategory = useSelector((state: any) => state.filter.activeCategory);
+  const sortType = useSelector((state: any) => state.filter.sortType);
+  const currentPage = useSelector((state: any) => state.filter.currentPage);
+  const { items, status } = useSelector((state: any) => state.pizza);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const searchValue = useSelector((state) => state.filter.searchValue);
+  const searchValue = useSelector((state: any) => state.filter.searchValue);
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
@@ -32,6 +32,7 @@ function Home() {
     const orderBy = sortType.sortProperty.includes("-") ? "asc" : "desc";
     const search = searchValue ? `search=${searchValue}` : "";
     dispatch(
+      //@ts-ignore
       fetchPizzas({
         currentPage,
         category,
@@ -88,7 +89,7 @@ function Home() {
       <div className="content__top">
         <Categories
           activeCategory={activeCategory}
-          onChangeCategory={(id) => dispatch(setActiveCategory(id))}
+          onChangeCategory={(id: number) => dispatch(setActiveCategory(id))}
         />
         <Sort />
       </div>
@@ -107,12 +108,12 @@ function Home() {
             ? [...new Array(6)].map((_, index) => (
                 <PizzaBlockLoader key={index} />
               ))
-            : items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)}
+            : items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />)}
         </div>
       )}
       <Pagination
         currentPage={currentPage}
-        setCurrentPage={(number) => {
+        setCurrentPage={(number: number) => {
           dispatch(setCurrentPage(number));
         }}
       />
