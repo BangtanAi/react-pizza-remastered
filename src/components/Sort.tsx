@@ -4,7 +4,10 @@ import {setActiveSortType} from '../redux/slices/filterSlice';
 
 type SortItem = {
   name: string, sortProperty: string
-}
+};
+type PopupClick = MouseEvent & {
+  path: Node[];
+};
 export const sortNames:SortItem[]  = [
   { name: "популярности (desc)", sortProperty: "rating" },
   { name: "популярности (asc)", sortProperty: "-rating" },
@@ -20,14 +23,15 @@ const Sort: React.FC = ()=>  {
   const [open, setOpen] = React.useState(false);
   const sortRef = React.useRef<HTMLDivElement>(null);
 
-  const onClickSortItem = (i: any) => {
-    dispatch(setActiveSortType(i))
+  const onClickSortItem = (obj: SortItem) => {
+    dispatch(setActiveSortType(obj))
     setOpen(false);
   };
 
   React.useEffect(()=>{
-    const handleClickOutside = (event: any)=>{
-      if(!event.path.includes(sortRef.current)){
+    const handleClickOutside = (event: MouseEvent)=>{
+      const _event = event as PopupClick;
+      if(sortRef.current && !_event.path.includes(sortRef.current)){
         setOpen(false)
       }
     }

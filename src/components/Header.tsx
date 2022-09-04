@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { Search } from "./Search";
+import { Search } from "./Search"; 
 
 const Header: React.FC = ()=> {
   const totalCount:any = useSelector((state: any) => state.cart.totalCount);
