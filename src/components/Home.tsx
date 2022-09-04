@@ -84,12 +84,16 @@ const Home:React.FC = () => {
     isSearch.current = false;
   }, [activeCategory, sortType, searchValue, currentPage]);
 
+  const onChangeCategoryId = React.useCallback((id: number) => {
+    dispatch(setActiveCategory(id))
+  }, [])
+
   return (
     <div className="container">
       <div className="content__top">
         <Categories
           activeCategory={activeCategory}
-          onChangeCategory={(id: number) => dispatch(setActiveCategory(id))}
+          onChangeCategory={onChangeCategoryId}
         />
         <Sort />
       </div>

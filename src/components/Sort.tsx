@@ -17,7 +17,7 @@ export const sortNames:SortItem[]  = [
   { name: "цене (asc)", sortProperty: "-price" },
 ];
 
-const Sort: React.FC = ()=>  {
+const Sort: React.FC = React.memo(()=>  {
   const sortType = useSelector((state: any) => state.filter.sortType);
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
@@ -74,6 +74,6 @@ const Sort: React.FC = ()=>  {
       )}
     </div>
   );
-}
+})
 
 export default Sort;
